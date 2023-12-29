@@ -1,0 +1,194 @@
+/************************************************************
+
+Author: Genevieve Masioni
+Author URI : http://genevievemasioni.com
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Version: 1.0
+Tags: rainbow, draw, pencil, art supplies
+
+**************************************************************
+
+Table of Contents:
+
+  0. GLOBAL
+  1. CANVAS
+  2. PARAMETERS
+
+**************************************************************/
+
+
+/************************************************
+0.	GLOBAL
+************************************************/
+
+:root {
+  --base-bg-color: lightgray;
+  --primary-color: #7cc6da;
+  --secondary-color: rgb(125, 200, 223, .5);
+  --base-shadow-color: #baaeab;
+  --base-font-color: #A79289;
+  --base-padding: 1rem;
+  --base-font-family: 'Montserrat', sans-serif;
+  --base-shadow: 0px 2px 10px rgba(5, 0, 56, 0.08);
+}
+
+html, body {
+  font-size: 16px;
+  background-color: var(--base-bg-color);
+}
+
+body {
+  font-family: var(--base-font-family);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+label {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: var(--base-font-color);
+}
+
+.hidden {
+  display: none;
+}
+
+.flex {
+  display: flex;
+}
+
+.card {
+  background: var(--base-bg-color);
+  box-shadow: var(--base-shadow);
+  border-radius: .3rem;
+  box-sizing: border-box;
+  padding: .5rem;
+}
+
+.vertical-divider {
+  height: 100%;
+  width: 1rem;
+  transform: rotate(90deg);
+  opacity: .4;
+  margin: 0 .5rem;
+}
+
+/************************************************
+1.	CANVAS
+************************************************/
+
+canvas#drawing-area {
+  background-color: white;
+  margin: 2rem;
+  width: 100%;
+}
+
+/* canvas#drawing-area {
+  background: #000 url('../images/bg_dot_small.jpg') no-repeat;
+  background-size: cover;
+  background-blend-mode: hard-light;
+} */
+
+/************************************************
+2.	PARAMETERS
+************************************************/
+
+.toolbar-action {
+  background: transparent;
+  border: none;
+  border-radius: .2rem;
+  margin: 0 .2rem;
+}
+
+.toolbar-action.disabled {
+  opacity: .5;
+  pointer-events: none;
+}
+
+.toolbar-action:hover, .toolbar-action.selected {
+  cursor: pointer;
+  background: var(--secondary-color);
+}
+
+.toolbar-action-icon {
+  width: 2rem;
+  padding: .1rem .05rem;
+}
+
+.toolbar {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  /* max-width: 20%; */
+  /* background: var(--primary-color); */
+
+}
+
+.param label {
+  margin-right: var(--base-padding);
+}
+
+.btnErase {
+  margin-left: var(--base-padding);
+}
+
+.toolbar-action-modal {
+  position: absolute;
+  /* top: -2rem; */
+  bottom: 3rem;
+}
+
+#toolbar-stroke-color:hover .stroke-color-modal,
+#toolbar-stroke-width:hover .stroke-width-modal,
+#toolbar-stroke-opacity:hover .stroke-opacity-modal,
+#toolbar-background-pattern:hover .background-pattern-modal {
+  display: block;
+}
+
+#toolbar-pencil.selected {
+  cursor: url("../icons/icon_edit.svg"), pointer;
+}
+
+.background-pattern-modal {
+  max-width: 4rem;
+}
+
+.toolbar-background-pattern-choice {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: .1rem solid rgba(0,0,0, .4);
+}
+
+.toolbar-background-pattern-choice.selected {
+  border-color: var(--primary-color);
+}
+
+
+#toolbar-stroke-color-picker {
+  width: 100%;
+  margin-top: var(--base-padding);
+}
+
+.stroke-color-list {
+  flex-wrap: wrap;
+  max-width: 3rem;
+}
+
+.stroke-color-choice {
+  flex: 1 1 25%;
+  margin: .2rem;
+  width: 1rem;
+  /* height: 1rem; */
+  border-radius: 50%;
+  border: .1rem solid rgba(0,0,0, .4);
+  aspect-ratio: 1/1;
+}
