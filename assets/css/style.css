@@ -23,13 +23,13 @@ Table of Contents:
 ************************************************/
 
 :root {
-  --base-bg-color: lightgray;
+  --base-bg-color: #f2f2f2;
   --primary-color: #7cc6da;
   --secondary-color: rgb(125, 200, 223, .5);
   --base-shadow-color: #baaeab;
   --base-font-color: #A79289;
   --base-padding: 1rem;
-  --base-font-family: 'Montserrat', sans-serif;
+  --base-font-family: 'IBM Plex Sans', sans-serif;
   --base-shadow: 0px 2px 10px rgba(5, 0, 56, 0.08);
 }
 
@@ -41,9 +41,6 @@ html, body {
 body {
   font-family: var(--base-font-family);
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   margin: 0;
 }
 
@@ -62,30 +59,52 @@ label {
 }
 
 .card {
-  background: var(--base-bg-color);
+  background: #fff;
   box-shadow: var(--base-shadow);
   border-radius: .3rem;
   box-sizing: border-box;
   padding: .5rem;
+  width: min-content;
+}
+
+.divider {
+  width: 100%;
+  opacity: .4;
+  margin: .5rem 0;
 }
 
 .vertical-divider {
-  height: 100%;
-  width: 1rem;
   transform: rotate(90deg);
+  height: 100%;
   opacity: .4;
+  width: 1rem;
   margin: 0 .5rem;
+}
+
+#site-header {
+  background-color: white;
+  padding: var(--base-padding);
+  display: flex;
+  align-items: center;
+}
+
+#site-logo {
+  margin-right: var(--base-padding);
+}
+
+#site-name {
+  font-size: 1rem;
+}
+
+#project-name {
+  border: 1px solid rgb(0,0,0, .4);
+  border-radius: .3rem;
+  padding: .3rem .5rem;
 }
 
 /************************************************
 1.	CANVAS
 ************************************************/
-
-canvas#drawing-area {
-  background-color: white;
-  margin: 2rem;
-  width: 100%;
-}
 
 /* canvas#drawing-area {
   background: #000 url('../images/bg_dot_small.jpg') no-repeat;
@@ -102,6 +121,7 @@ canvas#drawing-area {
   border: none;
   border-radius: .2rem;
   margin: 0 .2rem;
+  width: 100%;
 }
 
 .toolbar-action.disabled {
@@ -122,12 +142,11 @@ canvas#drawing-area {
 .toolbar {
   position: absolute;
   left: 1rem;
-  bottom: 1rem;
+  bottom: 50%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  /* max-width: 20%; */
   /* background: var(--primary-color); */
 
 }
@@ -142,8 +161,8 @@ canvas#drawing-area {
 
 .toolbar-action-modal {
   position: absolute;
-  /* top: -2rem; */
-  bottom: 3rem;
+  top: 3rem;
+  left: 3rem;
 }
 
 #toolbar-stroke-color:hover .stroke-color-modal,
