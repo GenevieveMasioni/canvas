@@ -14,6 +14,7 @@ Table of Contents:
   0. GLOBAL
   1. HEADER
   2. SIDEBAR MENU
+  3. ERRORS
 
 **************************************************************/
 
@@ -80,6 +81,10 @@ label {
   opacity: .4;
   width: 1rem;
   margin: 0 .5rem;
+}
+
+.hidden {
+  display: none;
 }
 
 /************************************************
@@ -204,4 +209,34 @@ label {
   border-radius: 50%;
   border: .1rem solid rgba(0,0,0, .4);
   aspect-ratio: 1/1;
+}
+
+/************************************************
+3.	ERRORS
+************************************************/
+
+.error-message {
+  position: absolute;
+  bottom: 10%;
+  left: 40%;
+  width: 22%;
+  padding: .5rem var(--base-padding);
+  text-align: center;
+  background: #e51c00;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+}
+
+.error-message.hidden {
+  display: none;
+}
+
+.error-message-icon {
+  width: 1.3rem;
+}
+
+#error-message-close:hover {
+  cursor: pointer;
+  opacity: .7;
 }

@@ -83,6 +83,15 @@ class DrawingBoard {
         image.src = source;
     }
 
+    raiseErrorEvent(message) {
+        console.error(message);
+        this.canvas.dispatchEvent(
+            new ErrorEvent("error", {
+                message : message
+            })
+        );
+    }
+
     handleImageDrop(e) {
         this.ignoreMouseEvent(e);
         const currentX = e.offsetX;
@@ -93,13 +102,15 @@ class DrawingBoard {
         const file = files[0];
 
         if(!file.type.startsWith("image/")) {
-            console.error("Not an image");
+            const message = "Error: Unsupported file format (not an image)."
+            this.raiseErrorEvent(message);
             return;
         }
 
         const reader = new FileReader();
         reader.onerror = (error) => {
-            console.error("Error while reading file :", error.message);
+            const message = `Error while reading file: ${error.message}`;
+            this.raiseErrorEvent(message);
         };
         reader.onload = (e) => {
             this.drawImage(e.target.result, currentX, currentY);
@@ -139,13 +150,15 @@ class DrawingBoard {
 
     openProject(file) {
         if(!file || !file.type.startsWith("application/json")) {
-            console.error("No file or not a JSON file");
+            const message = "Error: not a JSON file";
+            this.raiseErrorEvent(message);
             return;
         }
         var reader = new FileReader();
         reader.readAsText(file, "UTF-8");
         reader.onerror = (error) => {
-            console.error("Error while reading file :", error.message);
+            const message = `Error while reading file: ${error.message}`;
+            this.raiseErrorEvent(message);
         };
         reader.onload = readerEvent => {
             var content = readerEvent.target.result;

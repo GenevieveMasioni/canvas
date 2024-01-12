@@ -12,9 +12,12 @@ window.onload = () => {
   const filePicker = document.createElement("input");
   const undoBtn = document.getElementById("toolbar-undo");
   const redoBtn = document.getElementById("toolbar-redo");
-  var selectedBackgroundPattern;
+  const errorMessageWrapper = document.getElementById("error-message-wrapper");
+  const errorMessage = document.getElementById("error-message-content");
+  const errorMessageCloseBtn = document.getElementById("error-message-close");
+  var selectedBackgroundPattern; 
 
-  function initializetUI() {
+  function initializeUI() {
     filePicker.type = "file";
     sizePicker.value = 3;
     colorPicker.value = "#373737";
@@ -97,8 +100,15 @@ window.onload = () => {
     redoBtn.addEventListener("click", (e) => drawingBoard.redoAction());
 
     window.addEventListener("keydown", handleKeyboardShortcut);
+    canvas.addEventListener("error", (e) => { 
+      errorMessage.textContent = e.message; 
+      errorMessageWrapper.classList.remove("hidden"); 
+    });
+    errorMessageCloseBtn.addEventListener("click", (e) => { 
+      errorMessageWrapper.classList.add("hidden"); 
+    });
   }
 
-  initializetUI();
+  initializeUI();
   setupEventListeners();
 }
