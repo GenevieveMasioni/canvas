@@ -31,8 +31,8 @@ class DrawingBoard {
     init() {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
-        this.ctx.lineJoin = 'round';
-        this.ctx.lineCap = 'round';
+        this.ctx.lineJoin = "round";
+        this.ctx.lineCap = "round";
 
         this.canvas.addEventListener("mousemove", this.drawLine.bind(this));
         this.canvas.addEventListener("mousedown", this.startDrawing.bind(this));
@@ -143,7 +143,7 @@ class DrawingBoard {
             return;
         }
         var reader = new FileReader();
-        reader.readAsText(file, 'UTF-8');
+        reader.readAsText(file, "UTF-8");
         reader.onerror = (error) => {
             console.error("Error while reading file :", error.message);
         };

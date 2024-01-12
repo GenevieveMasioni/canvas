@@ -9,13 +9,13 @@ window.onload = () => {
   const openProjectBtn = document.getElementById("toolbar-open-project");
   const sizePicker = document.getElementById("size-picker");
   const colorPicker = document.getElementById("color-picker");
-  const filePicker = document.createElement('input');
+  const filePicker = document.createElement("input");
   const undoBtn = document.getElementById("toolbar-undo");
   const redoBtn = document.getElementById("toolbar-redo");
   var selectedBackgroundPattern;
 
   function initializetUI() {
-    filePicker.type = 'file';
+    filePicker.type = "file";
     sizePicker.value = 3;
     colorPicker.value = "#373737";
     drawingBoard.setProjectName(projectNameInput.value);
@@ -53,6 +53,7 @@ window.onload = () => {
   
   function handleColorChoice(e) {
     colorPicker.value = `${e.target.dataset.value}`;
+    colorPicker.dispatchEvent(new Event("change"));
   }
 
   function handleBackgroundPatternChoice(e) {
@@ -69,33 +70,33 @@ window.onload = () => {
     document.querySelectorAll(".stroke-color-choice")
       .forEach((colorChoice) => {
         colorChoice.style.backgroundColor = `${colorChoice.dataset.value}`;
-        colorChoice.addEventListener('click', handleColorChoice);
+        colorChoice.addEventListener("click", handleColorChoice);
       });
 
     document.querySelectorAll(".toolbar-background-pattern-choice")
       .forEach((pattern) => {
-        pattern.addEventListener('click', handleBackgroundPatternChoice);
+        pattern.addEventListener("click", handleBackgroundPatternChoice);
       });
 
-    sizePicker.addEventListener('change', 
+    sizePicker.addEventListener("change", 
     (e) => drawingBoard.setLineWidth(sizePicker.value));
-    colorPicker.addEventListener('change', 
+    colorPicker.addEventListener("change", 
     (e) => drawingBoard.setStrokeColor(colorPicker.value));
 
     clearBtn.addEventListener("click", (e) => drawingBoard.clear());
-    downloadBtn.addEventListener('click', (e) => drawingBoard.download());
+    downloadBtn.addEventListener("click", (e) => drawingBoard.download());
     filePicker.addEventListener("change", 
     (e) => drawingBoard.openProject(e.target.files[0]));
     projectNameInput.addEventListener("change", 
     (e) => drawingBoard.setProjectName(e.target.value));
 
-    saveProjectBtn.addEventListener('click', (e) => drawingBoard.saveProject());
-    openProjectBtn.addEventListener('click', openFilePicker);
+    saveProjectBtn.addEventListener("click", (e) => drawingBoard.saveProject());
+    openProjectBtn.addEventListener("click", openFilePicker);
 
-    undoBtn.addEventListener('click', (e) => drawingBoard.undoAction());
-    redoBtn.addEventListener('click', (e) => drawingBoard.redoAction());
+    undoBtn.addEventListener("click", (e) => drawingBoard.undoAction());
+    redoBtn.addEventListener("click", (e) => drawingBoard.redoAction());
 
-    window.addEventListener('keydown', handleKeyboardShortcut);
+    window.addEventListener("keydown", handleKeyboardShortcut);
   }
 
   initializetUI();
