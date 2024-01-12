@@ -12,8 +12,8 @@ Tags: rainbow, draw, pencil, art supplies
 Table of Contents:
 
   0. GLOBAL
-  1. CANVAS
-  2. PARAMETERS
+  1. HEADER
+  2. SIDEBAR MENU
 
 **************************************************************/
 
@@ -36,6 +36,7 @@ Table of Contents:
 html, body {
   font-size: 16px;
   background-color: var(--base-bg-color);
+  background-blend-mode: multiply;
 }
 
 body {
@@ -81,6 +82,10 @@ label {
   margin: 0 .5rem;
 }
 
+/************************************************
+1.	HEADER
+************************************************/
+
 #site-header {
   background-color: white;
   padding: var(--base-padding);
@@ -103,17 +108,7 @@ label {
 }
 
 /************************************************
-1.	CANVAS
-************************************************/
-
-/* canvas#drawing-area {
-  background: #000 url('../images/bg_dot_small.jpg') no-repeat;
-  background-size: cover;
-  background-blend-mode: hard-light;
-} */
-
-/************************************************
-2.	PARAMETERS
+2.	SIDEBAR MENU
 ************************************************/
 
 .toolbar-action {
@@ -142,13 +137,11 @@ label {
 .toolbar {
   position: absolute;
   left: 1rem;
-  bottom: 50%;
+  top: 30%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  /* background: var(--primary-color); */
-
 }
 
 .param label {
@@ -177,7 +170,9 @@ label {
 }
 
 .background-pattern-modal {
-  max-width: 4rem;
+  width: max-content;
+  top: 0;
+  left: 4rem;
 }
 
 .toolbar-background-pattern-choice {
@@ -206,7 +201,6 @@ label {
   flex: 1 1 25%;
   margin: .2rem;
   width: 1rem;
-  /* height: 1rem; */
   border-radius: 50%;
   border: .1rem solid rgba(0,0,0, .4);
   aspect-ratio: 1/1;
