@@ -6,8 +6,10 @@ Virtual space for image annotation. [Live demo here](https://genevievemasioni.gi
 
 ## To do
 
-- [ ] Clean the code
-- [ ] Open project : check format and info
+- [ ] Display error messages on UI (image drag-drop, open project)
+- [x] Clean the code
+- [x] Handle file errors : check file types (image and JSON files)
+- [ ] Open project : check file structure
 - [ ] Move image in canvas
 - [ ] Zoom in workspace
 - [ ] Infinite workspace
