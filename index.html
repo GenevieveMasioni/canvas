@@ -9,6 +9,8 @@
   <link rel="stylesheet" type="text/css" href="assets/css/style.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="assets/js/classes.js"></script>
+  <script src="assets/js/main.js"></script>
 </head>
 <body>
   <header id="site-header">
@@ -64,12 +66,6 @@
       <button type="button" id="toolbar-highlighter" name="toolbar-highlighter" class="toolbar-action hidden">
         <img src="assets/icons/icon_highlighter.svg" alt="" class="toolbar-action-icon">
       </button>
-      <!-- <button type="button" id="toolbar-eraser" name="toolbar-eraser" class="toolbar-action">
-        <img src="assets/icons/icon_eraser.svg" alt="" class="toolbar-action-icon">
-      </button>
-      <button type="button" id="toolbar-eraser-magic" name="toolbar-eraser-magic" class="toolbar-action">
-        <img src="assets/icons/icon_eraser_magic.svg" alt="" class="toolbar-action-icon">
-      </button> -->
       <button type="button" id="toolbar-eraser-all" name="toolbar-eraser-all" class="toolbar-action">
         <img src="assets/icons/icon_mop.svg" alt="" class="toolbar-action-icon">
       </button>
@@ -83,7 +79,6 @@
       </button>
       <button type="button" id="toolbar-open-project" name="toolbar-open-project" class="toolbar-action">
         <img src="assets/icons/icon_folder_open.svg" alt="" class="toolbar-action-icon">
-        <!-- <input type="file" id="project-file-picker"> -->
       </button>
       <hr class="divider"/>
       <button type="button" id="toolbar-undo" name="toolbar-undo" class="toolbar-action">
@@ -92,263 +87,7 @@
       <button type="button" id="toolbar-redo" name="toolbar-redo" class="toolbar-action">
         <img src="assets/icons/icon_redo.svg" alt="" class="toolbar-action-icon">
       </button>
-      <!-- <hr class="vertical-divider"/>
-      <button type="button" id="toolbar-info" name="toolbar-info" class="toolbar-action disabled">
-        <img src="assets/icons/icon_info.svg" alt="" class="toolbar-action-icon">
-        <div class="toolbar-info-tooltip card hidden">
-        </div>
-      </button> -->
     </div>
   </main>
 </body>
-<script type="text/javascript">
-    window.onload = () => {
-      var canvasStatesList = new Array();
-      var currentCanvasStateIdx = 0;
-      const canvas = document.querySelector("#drawing-area");
-      const ctx = canvas.getContext("2d");
-
-      const projectNameInput = document.querySelector("#project-name");
-      const clearBtn = document.querySelector("#toolbar-eraser-all");
-      const downloadBtn = document.querySelector("#toolbar-download");
-      const saveProjectBtn = document.querySelector("#toolbar-save-project");
-      const openProjectBtn = document.querySelector("#toolbar-open-project");
-      const sizePicker = document.querySelector("#size-picker");
-      const colorPicker = document.querySelector("#color-picker");
-      const filePicker = document.createElement('input');
-      const undoBtn = document.querySelector("#toolbar-undo");
-      const redoBtn = document.querySelector("#toolbar-redo");
-      var selectedToolbarAction, selectedBackgroundPattern;
-
-      let lastX = 0;
-      let lastY = 0;
-      let isDrawing = false;
-
-      function selectedToolbarActionChanged(newAction) {
-        if(selectedToolbarAction == newAction) return;
-        let oldAction = selectedToolbarAction;
-        if(oldAction) {
-          oldAction.classList.remove("selected");
-        }
-        newAction.classList.add("selected");
-        selectedToolbarAction = newAction;
-        document.body.style.cursor = `url(${newAction.firstElementChild.src}) 5 48, auto`;
-      }
-      
-      function initCanvas() {
-        filePicker.type = 'file';
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        ctx.lineJoin = 'round';
-        ctx.lineCap = 'round';
-        // ctx.lineWidth = sizePicker.value;
-        // ctx.strokeStyle = colorPicker.value;
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = "#373737";
-      }
-
-      function clearCanvas() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-
-      function draw(e) {
-        if (!isDrawing) return;
-        ctx.beginPath();
-        ctx.moveTo(lastX, lastY);
-        ctx.lineTo(e.offsetX, e.offsetY);
-        ctx.stroke();
-        [lastX, lastY] = [e.offsetX, e.offsetY];
-      }
-
-      function dragenter(e) {
-        e.stopPropagation();
-        e.preventDefault();
-      }
-
-      function dragover(e) {
-          e.stopPropagation();
-          e.preventDefault();
-      }
-
-      function drop(e) {
-          e.stopPropagation();
-          e.preventDefault();
-          const currentX = e.offsetX;
-          const currentY = e.offsetY;
-
-          const dt = e.dataTransfer;
-          const files = dt.files;
-          const file = files[0];
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            const image = new Image();
-            image.onload = () => {
-              ctx.drawImage(image, currentX, currentY, image.naturalWidth, image.naturalHeight);
-            }
-            image.src = e.target.result;
-          };
-          reader.readAsDataURL(file);
-      }
-
-      function downloadCanvas() {
-        const dataURL = canvas.toDataURL();
-        const link = document.createElement("a");
-        link.download = `${projectNameInput.value}.png`;
-        link.href = dataURL;
-        link.click();
-      }
-
-      function saveProject() {
-        const project = {
-          "name": projectNameInput.value,
-          "data": canvas.toDataURL()
-        };
-
-        const blob = new Blob([JSON.stringify(project, null, 2)], {
-          type: "application/json",
-        });
-        const projectURL = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.download = `${projectNameInput.value}.json`;
-        link.href = projectURL;
-        link.click();
-      }
-
-      function openFilePicker() {
-        filePicker.click();
-      }
-
-      function openProject(e) {
-        var file = e.target.files[0]; 
-        var reader = new FileReader();
-        reader.readAsText(file,'UTF-8');
-        reader.onload = readerEvent => {
-          var content = readerEvent.target.result;
-          const projectData = JSON.parse(content);
-          const image = new Image();
-          image.onload = () => {
-            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-          };
-          image.src = projectData.data;
-          projectNameInput.value = projectData.name;
-        }
-      }
-
-      function drawCanvasState(index) {
-        clearBtn.click();
-        const state = canvasStatesList[index];
-        const image = new Image();
-        image.onload = () => {
-          ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-        };
-        image.src = state;
-      }
-
-      function undoAction() {
-        if(currentCanvasStateIdx - 1 < 0) return;
-        currentCanvasStateIdx--;
-        drawCanvasState(currentCanvasStateIdx);
-      }
-
-      function redoAction() {
-        if(currentCanvasStateIdx + 1 > canvasStatesList.length) return;
-        currentCanvasStateIdx++;
-        drawCanvasState(currentCanvasStateIdx);
-      }
-
-      function saveAction() {
-        for(let i = currentCanvasStateIdx + 1; i < canvasStatesList.length; i++) {
-          canvasStatesList.pop();
-        }
-        canvas.toBlob((blob) => {
-        const currentState = URL.createObjectURL(blob);
-        canvasStatesList.push(currentState);
-        currentCanvasStateIdx = canvasStatesList.length - 1;
-        });
-      }
-
-      function setEventListeners() {
-        canvas.addEventListener("mousemove", draw);
-        canvas.addEventListener("mousedown", (e) => {
-          isDrawing = true;
-          [lastX, lastY] = [e.offsetX, e.offsetY];
-        });
-
-        canvas.addEventListener("mouseup", () => {
-          isDrawing = false;
-          saveAction();
-        });
-        canvas.addEventListener("mouseout", () => (isDrawing = false));
-
-        canvas.addEventListener("dragenter", dragenter, false);
-        canvas.addEventListener("dragover", dragover, false);
-        canvas.addEventListener("drop", drop, false);
-        
-        clearBtn.addEventListener("click", clearCanvas);
-
-        sizePicker.addEventListener('change', () => (ctx.lineWidth = sizePicker.value));
-        colorPicker.addEventListener('change', () => (ctx.strokeStyle = colorPicker.value));
-
-        document.querySelectorAll(".stroke-color-choice").forEach((colorChoice) => {
-          colorChoice.style.backgroundColor = `${colorChoice.dataset.value}`;
-          colorChoice.addEventListener('click', (e) => {
-            colorPicker.value = `${colorChoice.dataset.value}`;
-            colorPicker.dispatchEvent(new Event('change'));
-          });
-        });
-
-        document.querySelectorAll(".toolbar-background-pattern-choice").forEach((pattern) => {
-          pattern.addEventListener('click', (e) => {
-            if(selectedBackgroundPattern) {
-              selectedBackgroundPattern.classList.remove("selected");
-            }
-            pattern.classList.add("selected");
-            selectedBackgroundPattern = pattern;
-            document.body.style.backgroundImage = `url(${pattern.dataset.url})`;
-          });
-        });
-
-        downloadBtn.addEventListener('click', downloadCanvas);
-        filePicker.addEventListener("change", openProject);
-
-        saveProjectBtn.addEventListener('click', saveProject);
-        openProjectBtn.addEventListener('click', openFilePicker);
-
-        undoBtn.addEventListener('click', undoAction, false);
-        redoBtn.addEventListener('click', redoAction, false);
-
-
-        window.addEventListener('keydown', (e) => {
-          if(e.ctrlKey && e.code == "KeyW") {
-            console.log("Ctrl+Z !");
-            undoAction();
-          }
-
-          if(e.ctrlKey && e.code == "KeyY") {
-            console.log("Ctrl+Y !");
-            redoAction();
-          }
-
-          if(e.code == "KeyE") {
-            clearCanvas();
-          }
-
-          if(e.ctrlKey && e.code == "KeyS") {
-            saveProject();
-          }
-
-          if(e.ctrlKey && e.code == "KeyO") {
-            openFilePicker();
-          }
-
-          if(e.ctrlKey && e.code == "KeyD") {
-            downloadCanvas();
-          }
-        });
-      }
-
-      initCanvas();
-      setEventListeners();
-    }
-</script>
 </html>
